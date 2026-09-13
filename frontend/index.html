@@ -1,0 +1,327 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Photos de Groupe Ligue 1 par Journée | Fantasy Coach</title>
+<meta name="description" content="La photo de groupe de chaque équipe de Ligue 1, journée par journée : qui est du voyage, qui manque à l'appel.">
+<link rel="canonical" href="https://groupes.fantasy-coach.fr/">
+<link rel="icon" type="image/png" href="https://static.wixstatic.com/media/449182_b075115d95e54908bebcaaef43561929~mv2.png/v1/fill/w_64,h_64,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/newlogo.png">
+<meta name="robots" content="index, follow">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Fantasy Coach">
+<meta property="og:title" content="Photos de Groupe Ligue 1 par Journée | Fantasy Coach">
+<meta property="og:description" content="La photo de groupe de chaque équipe de Ligue 1, journée par journée.">
+<meta property="og:url" content="https://groupes.fantasy-coach.fr/">
+<meta property="og:image" content="https://static.wixstatic.com/media/449182_b075115d95e54908bebcaaef43561929~mv2.png/v1/fill/w_174,h_174,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/newlogo.png">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "Photos de Groupe Ligue 1 — Fantasy Coach",
+  "url": "https://groupes.fantasy-coach.fr/",
+  "description": "La photo de groupe de chaque équipe de Ligue 1, journée par journée.",
+  "inLanguage": "fr"
+}
+</script>
+<!-- Shared nav/ads/feedback components — see https://github.com/lionelleboiteux/fc-shared -->
+<script src="https://cdn.jsdelivr.net/gh/lionelleboiteux/fc-shared@main/nav.js" defer></script>
+<script src="https://cdn.jsdelivr.net/gh/lionelleboiteux/fc-shared@main/ads.js" async></script>
+<script src="https://cdn.jsdelivr.net/gh/lionelleboiteux/fc-shared@main/feedback.js" defer></script>
+<style>
+  :root {
+    /* fantasy-coach.fr's own blue (reused from pronos/DNP/compos) so this
+       page reads as part of the same site. */
+    --fc-blue: #3d9be9;
+    --fc-blue-light: #63b0ee;
+    --bg: #ffffff;
+    --card: #ffffff;
+    --ink: #1c1917;
+    --muted: #6b6560;
+    --border: #d6d3d1;
+    --accent: var(--fc-blue);
+    --accent-ink: #ffffff;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    padding: 0 1rem 1rem;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    line-height: 1.5;
+  }
+  .site-footer { text-align: center; font-size: 0.8rem; color: var(--muted); margin: 2.5rem 0 1rem; }
+  main { max-width: 960px; margin: 0 auto; }
+  h1 { font-size: 1.4rem; margin: 0.5rem 0 1rem; }
+  .intro { margin-bottom: 1.25rem; }
+  .intro p { margin: 0.5rem 0; }
+  .pickers { margin-bottom: 1.5rem; display: flex; gap: 1.5rem; flex-wrap: wrap; }
+  .picker label { display: block; font-weight: 600; margin-bottom: 0.4rem; }
+  .picker select {
+    width: 100%;
+    max-width: 280px;
+    padding: 0.55rem 0.7rem;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: var(--card);
+    color: var(--ink);
+    font-size: 1rem;
+  }
+  .status-line { color: var(--muted); font-size: 0.9rem; margin: 0.5rem 0 1rem; }
+  .team-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  @media (min-width: 640px) {
+    .team-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (min-width: 960px) {
+    .team-grid { grid-template-columns: repeat(3, 1fr); }
+  }
+  /* A lone selected team gets one wide column instead of sharing the
+     multi-column grid with empty cells either side. */
+  .team-grid.single-team { grid-template-columns: 1fr; max-width: 640px; margin: 0 auto; }
+  .team-card {
+    display: flex;
+    flex-direction: column;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 0.9rem 1rem 1rem;
+  }
+  .team-header {
+    font-size: 1.05rem;
+    font-weight: 700;
+    margin: 0 0 0.75rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid var(--accent);
+  }
+  .team-photo-wrap {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f4f3f2;
+    border-radius: 8px;
+    overflow: hidden;
+    aspect-ratio: 4 / 3;
+  }
+  .team-photo-wrap img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .no-photo {
+    color: var(--muted);
+    font-size: 0.9rem;
+    text-align: center;
+    padding: 1rem;
+  }
+  .empty-state, .error-state {
+    text-align: center;
+    color: var(--muted);
+    padding: 2rem 1rem;
+    border: 1px dashed var(--border);
+    border-radius: 12px;
+  }
+  .error-state { color: #b91c1c; }
+</style>
+</head>
+<body>
+<fc-nav current="groupes"></fc-nav>
+
+<main id="app">
+  <h1>Photos de groupe — Ligue 1</h1>
+  <div class="intro">
+    <p>La photo de groupe publiée par chaque club avant sa journée de championnat — qui est du voyage, équipe par équipe.</p>
+  </div>
+
+  <div class="pickers">
+    <div class="picker">
+      <label for="gameweek-select">Journée</label>
+      <select id="gameweek-select" disabled>
+        <option>Chargement…</option>
+      </select>
+    </div>
+    <div class="picker">
+      <label for="team-select">Équipe</label>
+      <select id="team-select" disabled>
+        <option value="">Toutes les équipes</option>
+      </select>
+    </div>
+  </div>
+
+  <p id="status-line" class="status-line"></p>
+  <div id="team-grid" class="team-grid"></div>
+  <noscript><p>Activez JavaScript pour afficher les photos de groupe.</p></noscript>
+
+  <fc-feedback project="groupes"></fc-feedback>
+</main>
+
+<footer class="site-footer">&copy;2026 by Fantasy Coach.</footer>
+
+<script>
+(function () {
+  // ?api=<url> overrides the Supabase REST base for local/dev testing only
+  // — same override convention as pronos/DNP/compos's frontends, never
+  // persisted.
+  var params = new URLSearchParams(location.search);
+
+  // pronos' own Supabase project — the `groupes` table lives there (see
+  // ../supabase/migration.sql) so it can carry a real foreign key into
+  // pronos' `teams` table rather than a hand-maintained duplicate list.
+  var SUPABASE_URL = params.get('api') || 'https://dmytkubjxwwwkroutvdu.supabase.co';
+  // Publishable ("anon") key for pronos' Supabase project — safe to expose
+  // client-side by design (Supabase's anon key is meant to be public; the
+  // `groupes` table's own RLS policy is what actually scopes it to
+  // read-only, see migration.sql). Get this from that project's Supabase
+  // dashboard → Project Settings → API → anon/public key (or the newer
+  // sb_publishable_... key) and paste it here.
+  var SUPABASE_ANON_KEY = 'sb_publishable_NJBIDHrOoSJGe7mteUgD-w_70zCLgwY';
+
+  var gameweekSelect = document.getElementById('gameweek-select');
+  var teamSelect = document.getElementById('team-select');
+  var statusLine = document.getElementById('status-line');
+  var teamGrid = document.getElementById('team-grid');
+
+  function el(tag, attrs, children) {
+    var e = document.createElement(tag);
+    for (var k in (attrs || {})) {
+      if (k === 'text') e.textContent = attrs[k];
+      else e.setAttribute(k, attrs[k]);
+    }
+    (children || []).forEach(function (c) { e.appendChild(c); });
+    return e;
+  }
+
+  function setStatus(text) {
+    statusLine.textContent = text || '';
+  }
+
+  function fetchJson_(url, attemptsLeft, delayMs) {
+    return fetch(url, { headers: { apikey: SUPABASE_ANON_KEY, Authorization: 'Bearer ' + SUPABASE_ANON_KEY } })
+      .then(function (r) {
+        if (!r.ok) throw new Error('HTTP ' + r.status);
+        return r.json();
+      })
+      .catch(function (err) {
+        if (attemptsLeft <= 1) throw err;
+        return new Promise(function (resolve) { setTimeout(resolve, delayMs); })
+          .then(function () { return fetchJson_(url, attemptsLeft - 1, delayMs * 2); });
+      });
+  }
+
+  function restUrl_(path) {
+    return SUPABASE_URL + '/rest/v1/' + path;
+  }
+
+  function renderTeams(rows, singleTeam) {
+    teamGrid.innerHTML = '';
+    teamGrid.classList.toggle('single-team', !!singleTeam);
+    if (!rows.length) {
+      teamGrid.appendChild(el('div', { class: 'empty-state', text: 'Aucune donnée pour cette sélection.' }));
+      return;
+    }
+    rows.forEach(function (row) {
+      var card = el('div', { class: 'team-card' });
+      card.appendChild(el('div', { class: 'team-header', text: row.team_name }));
+      var photoWrap = el('div', { class: 'team-photo-wrap' });
+      if (row.image_url) {
+        var img = el('img', { src: row.image_url, alt: 'Photo de groupe — ' + row.team_name, loading: 'lazy' });
+        img.addEventListener('error', function () {
+          photoWrap.innerHTML = '';
+          photoWrap.appendChild(el('div', { class: 'no-photo', text: 'Photo indisponible.' }));
+        });
+        photoWrap.appendChild(img);
+      } else {
+        photoWrap.appendChild(el('div', { class: 'no-photo', text: 'Pas encore de photo pour cette journée.' }));
+      }
+      card.appendChild(photoWrap);
+      teamGrid.appendChild(card);
+    });
+  }
+
+  function loadGroupes(gameweek, teamName) {
+    setStatus('Chargement…');
+    var query = 'groupes?gameweek=eq.' + encodeURIComponent(gameweek) + '&select=team_name,image_url&order=team_name.asc';
+    if (teamName) query += '&team_name=eq.' + encodeURIComponent(teamName);
+    fetchJson_(restUrl_(query), 3, 1000)
+      .then(function (rows) {
+        setStatus('');
+        renderTeams(rows, !!teamName);
+      })
+      .catch(function (err) {
+        setStatus('');
+        teamGrid.innerHTML = '';
+        teamGrid.appendChild(el('div', { class: 'error-state', text: 'Impossible de charger les photos (' + err.message + ').' }));
+      });
+  }
+
+  function refresh() {
+    var gw = gameweekSelect.value;
+    var team = teamSelect.value;
+    if (gw) loadGroupes(gw, team);
+  }
+
+  // jeu-des-pronos already tracks which Ligue 1 gameweek is current (locks
+  // open/close around kickoffs) — reuse that instead of guessing, same
+  // approach as l1.dnp.fantasy-coach.fr's and l1.compos.fantasy-coach.fr's
+  // frontends.
+  var PRONOS_L1_LEAGUE_ID = '27f27a15-02a9-448a-98d5-80998e2fa52e';
+
+  function fetchCurrentGameweekNumber() {
+    return fetch(SUPABASE_URL + '/functions/v1/api/v1/leagues/' + PRONOS_L1_LEAGUE_ID + '/current')
+      .then(function (r) { return r.json(); })
+      .then(function (data) { return data && data.gameweek ? data.gameweek.number : null; })
+      .catch(function () { return null; });
+  }
+
+  // Distinct gameweeks/teams come straight from what's actually in the
+  // `groupes` table (not a hardcoded Ligue 1 fixture list) — the dropdowns
+  // only ever offer a journée/équipe once at least one photo exists for it.
+  Promise.all([
+    fetchJson_(restUrl_('groupes?select=gameweek,team_name&order=gameweek.asc'), 3, 1000),
+    fetchCurrentGameweekNumber()
+  ])
+    .then(function (results) {
+      var allRows = results[0];
+      var currentNumber = results[1];
+
+      var gameweeks = Array.from(new Set(allRows.map(function (r) { return r.gameweek; })));
+      var teamNames = Array.from(new Set(allRows.map(function (r) { return r.team_name; }))).sort();
+
+      gameweekSelect.innerHTML = '';
+      gameweeks.forEach(function (gw) {
+        gameweekSelect.appendChild(el('option', { value: gw, text: 'Journée ' + gw }));
+      });
+      gameweekSelect.disabled = false;
+
+      teamNames.forEach(function (name) {
+        teamSelect.appendChild(el('option', { value: name, text: name }));
+      });
+      teamSelect.disabled = false;
+
+      // currentNumber is the *upcoming* gameweek per the pronos API; default
+      // to the highest available gameweek at or below it, same fallback
+      // logic as compos/DNP.
+      var defaultGw = null;
+      if (currentNumber != null) {
+        var eligible = gameweeks.filter(function (n) { return n <= currentNumber; }).sort(function (a, b) { return b - a; });
+        if (eligible.length) defaultGw = eligible[0];
+      }
+      if (defaultGw == null) defaultGw = gameweeks[gameweeks.length - 1];
+
+      gameweekSelect.value = defaultGw;
+      // Team defaults to "Toutes les équipes" (the blank first option),
+      // never a specific team, per spec.
+
+      gameweekSelect.addEventListener('change', refresh);
+      teamSelect.addEventListener('change', refresh);
+      refresh();
+    })
+    .catch(function (err) {
+      setStatus('');
+      teamGrid.appendChild(el('div', { class: 'error-state', text: 'Impossible de charger les journées disponibles (' + err.message + ').' }));
+    });
+})();
+</script>
+</body>
+</html>

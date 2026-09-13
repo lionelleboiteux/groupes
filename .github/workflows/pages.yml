@@ -1,0 +1,47 @@
+name: Deploy site to Pages
+
+# Hosts the "groupes" static page (frontend/index.html) at the site root.
+# Same shape as pronos/DNP/compos's pages.yml: this is a static-only site
+# (data comes straight from pronos' Supabase REST API at runtime, not from
+# anything built here), so the workflow just assembles and deploys.
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'frontend/index.html'
+      - 'frontend/ads.txt'
+      - '.github/workflows/pages.yml'
+  workflow_dispatch:
+
+permissions:
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Assemble site
+        run: |
+          mkdir -p _site
+          cp frontend/index.html _site/index.html
+          cp frontend/ads.txt _site/ads.txt
+          # Custom domain (DNS: groupes.fantasy-coach.fr CNAME <github-user>.github.io).
+          # Must be re-written on every deploy — GitHub Pages drops the custom
+          # domain if a deploy ever lands without this file.
+          echo "groupes.fantasy-coach.fr" > _site/CNAME
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+      - uses: actions/configure-pages@v5
+      - id: deployment
+        uses: actions/deploy-pages@v4
