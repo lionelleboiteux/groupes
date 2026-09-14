@@ -35,10 +35,14 @@ jobs:
           mkdir -p _site
           cp frontend/index.html _site/index.html
           cp frontend/ads.txt _site/ads.txt
-          # Custom domain (DNS: groupes.fantasy-coach.fr CNAME <github-user>.github.io).
+          # Custom domain (DNS: l1.groupes.fantasy-coach.fr CNAME <github-user>.github.io) —
+          # renamed from the old bare "groupes" host to match l1.compos/l1.dnp's
+          # naming. GitHub Pages only recognises one custom domain per site, so
+          # the old groupes.fantasy-coach.fr DNS record (left in place) no
+          # longer resolves to real content here.
           # Must be re-written on every deploy — GitHub Pages drops the custom
           # domain if a deploy ever lands without this file.
-          echo "groupes.fantasy-coach.fr" > _site/CNAME
+          echo "l1.groupes.fantasy-coach.fr" > _site/CNAME
       - uses: actions/upload-pages-artifact@v3
         with:
           path: _site
