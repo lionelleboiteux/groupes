@@ -219,6 +219,18 @@ pointing production nav at a subdomain that isn't live yet.
   whatever's actually already in the `groupes` table (`select=gameweek,
   team_name`), not a hardcoded Ligue 1 fixture list or team roster — a
   journée or a team only appears once at least one row exists for it.
+- **Empty Image URL still syncs**: `syncGroupesTab_` only requires Gameweek
+  + Équipe to sync a row — a blank Image URL cell still gets written as
+  `image_url: ''`, not skipped. This is deliberate: a team's row needs to
+  exist in Supabase for a given gameweek for the frontend to even know that
+  team should appear at all, and `renderTeams` already has a "Pas encore de
+  photo" fallback for exactly this case (`if (row.image_url) {...} else
+  {...}` in `frontend/index.html`) — so all 18 teams show up per gameweek
+  from the moment `setupGroupesTab` prefills the tab, with photos filling
+  in as they're added, rather than a team silently not appearing at all
+  until its URL is typed in. (An earlier version of this script required
+  Image URL too, which meant a gameweek with any still-blank cells rendered
+  fewer than 18 teams on the page — fixed 2026-09-14.)
 - **Caching**: deliberately none beyond the browser's own HTTP cache — see
   "Architecture" above for why this project skips the Worker/KV layer
   DNP/compos use.

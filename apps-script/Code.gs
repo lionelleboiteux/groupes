@@ -77,7 +77,14 @@ function syncGroupesTab_() {
   if (!sheet) throw new Error('No "' + SHEET_NAME + '" tab found in spreadsheet ' + SPREADSHEET_ID);
 
   var values = sheet.getDataRange().getValues(); // [ [Gameweek, Équipe, Image URL], ... ]
-  var rows = values.slice(1).filter(function (r) { return r[0] && r[1] && r[2]; });
+  // Only Gameweek + Équipe are required to sync a row — Image URL is
+  // deliberately allowed blank so every team still gets a row in Supabase
+  // for a gameweek even before its photo is in, and the frontend's own
+  // "Pas encore de photo" fallback (see renderTeams in frontend/index.html)
+  // has something to render instead of the team silently not appearing at
+  // all. A row missing Gameweek or Équipe isn't a real entry, so those
+  // still get dropped here.
+  var rows = values.slice(1).filter(function (r) { return r[0] && r[1]; });
 
   var teamIdByName = fetchTeamIdByName_();
   var upserts = [];
@@ -85,7 +92,7 @@ function syncGroupesTab_() {
   rows.forEach(function (r) {
     var gameweek = Number(r[0]);
     var teamName = String(r[1]).trim();
-    var imageUrl = String(r[2]).trim();
+    var imageUrl = String(r[2] || '').trim();
     var pronosName = TEAM_NAME_TO_PRONOS_NAME[teamName] || teamName;
     var teamId = teamIdByName[pronosName];
     if (!teamId) {
