@@ -11,6 +11,7 @@ on:
     paths:
       - 'frontend/index.html'
       - 'frontend/ads.txt'
+      - 'frontend/og-image.jpg'
       - '.github/workflows/pages.yml'
   workflow_dispatch:
 
@@ -35,6 +36,7 @@ jobs:
           mkdir -p _site
           cp frontend/index.html _site/index.html
           cp frontend/ads.txt _site/ads.txt
+          cp frontend/og-image.jpg _site/og-image.jpg
           # Custom domain (DNS: l1.groupes.fantasy-coach.fr CNAME <github-user>.github.io) —
           # renamed from the old bare "groupes" host to match l1.compos/l1.dnp's
           # naming. GitHub Pages only recognises one custom domain per site, so
